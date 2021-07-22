@@ -1,0 +1,86 @@
+{{extend './home.html'}}
+{{block 'title'}}
+  用户信息
+{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/main.css">
+<link rel="stylesheet" href="/public/css/settings.css">
+{{/block}}
+{{block 'body'}}
+<section class="container">
+  <div class="col-md-5">
+      {{if userInfo}}
+      <div class="form-group">
+        <label for="exampleInputEmail1">账号</label>
+        <p class="form-control-static">{{userInfo.email}}</p>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">昵称</label>
+        <input type="text" class="form-control nickname" id="exampleInputPassword1" placeholder="" value="{{userInfo.nickname}}">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">介绍</label>
+        <textarea class="form-control bio" rows="3" >{{userInfo.bio}}</textarea>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">性别</label>
+        <input type="text" class="form-control gender" id="exampleInputPassword1" placeholder="" value="{{userInfo.gender}}">
+      </div>
+      <button class="btn btn-success">保存</button>
+  </div>
+  <div class="col-md-2 profile-avatar">
+    <dl>
+      <dt>头像设置</dt>
+      <dd>
+        <img class="avatar" width="150" height="150" src="{{userInfo.avatar}}" alt="">
+        <div>
+          <button class="btn btn-default" href="">Upload new picture</button>
+        </div>
+      </dd>
+    </dl>
+  </div>
+  {{/if}}
+</section>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+<Script>
+  $('.btn-success').on('click', function (e) {
+    console.log(11)
+    console.log($(".nickname").val());
+    console.log($('.bio').val())
+    console.log($(".gender").val());
+    $.ajax({
+      url:'/profile',
+      type:'post',
+      data:{nickname:$(".nickname").val(),bio:$('.bio').val(),gender:$(".gender").val()},
+      dataType:'json',
+      success:function(data){
+        if(data.success){
+          alert('保存成功');
+          window.location.href = "/";
+        }else{
+          alert("保存失败");
+        }
+      }
+    })
+      
+      
+      // $.ajax({
+      //   url: '/profile',
+      //   type: 'post',
+      //   data: formData,
+      //   dataType: 'json',
+      //   success: function (data) {
+      //     if(data.success){
+      //       window.alert('登陆成功！');
+      //       window.location.href = '/'
+      //     }else{
+      //       window.alert('邮箱或密码错误！');
+      //     }
+      //   },
+        
+      // })
+    })
+</Script>
+{{/block}}
+
+

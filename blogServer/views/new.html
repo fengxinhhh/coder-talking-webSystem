@@ -1,0 +1,57 @@
+{{extend './home.html'}}
+{{block 'title'}}
+  新闻
+{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/main.css">
+{{/block}}
+{{block 'body'}}
+<section class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">选择板块</label>
+          <select class="form-control option">
+            <option>分享</option>
+            <option>问答</option>
+            <option>招聘</option>
+            <option>客户端测试</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">标题</label>
+          <input type="email" class="form-control title" id="exampleInputEmail1" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">内容</label>
+          <textarea class="form-control news" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+    $('.btn-default').on('click', function (e) {
+      e.preventDefault()
+      $.ajax({
+        url: '/new',
+        type: 'post',
+        data: {option:$(".option").val(),title:$(".title").val(),news:$(".news").val()},
+        dataType: 'json',
+        success: function (data) {
+          if(data.success){
+            window.alert('发布成功！');
+            window.location.href = "/"
+          }else{
+            window.alert('发布失败');
+          }
+        },
+        
+      })
+    })
+  </script>
+{{/block}}
+

@@ -1,0 +1,60 @@
+{{extend './home.html'}}
+{{block 'title'}}
+  登录
+{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/login.css">
+{{/block}}
+
+{{block 'body'}}
+  <div class="main">
+    <div class="header">
+      <a href="/">
+        <img src="/public/img/logo3.png" alt="">
+      </a>
+      <h1>用户登录</h1>
+    </div>
+    <form id="login_form">
+      <div class="form-group">
+        <label for="">邮箱</label>
+        <input type="email" class="form-control" id="" name="email" placeholder="Email" autofocus>
+      </div>
+      <div class="form-group">
+        <label for="">密码</label>
+        <a class="pull-right" href="">忘记密码？</a>
+        <input type="password" class="form-control" id="" name="password" placeholder="Password">
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox">记住我
+        </label>
+      </div>
+      <button type="submit" class="btn btn-success btn-block">登录</button>
+    </form>
+    <div class="message">
+      <p>没有账号? <a href="/register">点击创建</a>.</p>
+    </div>
+  </div>
+  <script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+    $('#login_form').on('submit', function (e) {
+      e.preventDefault()
+      var formData = $(this).serialize()
+      $.ajax({
+        url: '/login',
+        type: 'post',
+        data: formData,
+        dataType: 'json',
+        success: function (data) {
+          if(data.success){
+            window.alert('登陆成功！');
+            window.location.href = '/'
+          }else{
+            window.alert('邮箱或密码错误！');
+          }
+        },
+        
+      })
+    })
+  </script>
+{{/block}}

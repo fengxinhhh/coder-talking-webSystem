@@ -1,0 +1,86 @@
+{{extend './home.html'}}
+
+{{block 'title'}}
+  首页
+{{/block}}
+
+
+
+{{block 'body'}}
+<section class="container">
+  <ul class="media-list">
+    {{each nowNewsInfo}}
+    <li class="{{$index}}">
+      <div class="media-left">
+        <a href="#">
+          
+            <img width="40" height="40" class="media-object" src="{{$value.avatar}}" alt="...">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">{{$value.option}}<span class="filePost"  style="margin-left:30px;">{{$value.title}}</span><span class="fileIndex" style="display: none;">{{$index}}</span></h4>
+        <p>{{if $value.returnNum>0}}sueysok 回复了问题 •{{/if}} {{$value.lockNum}} 人关注 • {{$value.comment.length}} 个评论 • {{$value.readNum}} 次浏览 • {{$value.create_time}}</p>
+      </div>
+      
+    </li>
+    {{/each}}
+  </ul>
+  
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <li>
+        <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+      </li>
+      <li class="active"><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li>
+        <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+      </li>
+    </ul>
+  </nav>
+</section>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+    $('.filePost').on('click', function (e) {
+      e.preventDefault()
+      var index = $(this).next().text();
+      // console.log(index)
+      // location.href = `/showNews?index=${index}`
+      $.ajax({
+        url: '/showNews',
+        type: 'post',
+        data: {index:index},
+        dataType: 'json',
+        success:function(data){
+          if(data.success){
+            window.location.href = "/showNews"
+          }
+        }
+      })
+    })
+    $('.pagination li').click(function(){
+      console.log($(this).index());
+      $.ajax({
+        url:'/togglePage',
+        type:'get',
+        data:{pageNum:$(this).index()},
+        dataType:'json',
+        success:function(data){
+          window.location.href = '/'
+     
+        }
+      })
+    })
+   
+    
+  </script>
+{{/block}}
+
+

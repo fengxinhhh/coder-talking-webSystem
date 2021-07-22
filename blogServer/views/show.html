@@ -1,0 +1,60 @@
+{{extend './home.html'}}
+
+{{block 'title'}}
+  首页
+{{/block}}
+
+
+
+{{block 'body'}}
+<section class="container">
+  <h1 style="text-align: center;">{{news.title}}</h1>
+  <div style="text-align: left;">
+    {{news.news}}
+  </div>
+  <div style="margin-top:300px;">
+    <h3>热门评论</h3>
+    <h4 style="margin-top:50px;">发表评论</h4>
+    <input type=textarea style="width:500px;height:60px;" class="comment">
+    <button>提交</button>
+  </div>
+  <ul>
+    {{each comments}}
+    <li style="list-style: none;">
+      <b style="font-size:20px;">{{$value.nickname}}</b>
+      <p style="margin-top:20px;">{{$value.text}}</p>
+    </li>
+    {{/each}}
+  </ul>
+  <span>{{user}}</span>
+</section>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script>
+    $('button').on('click', function (e) {
+      e.preventDefault()
+      var user = $('span').text().split('n')[2];
+      if(user){
+        $.ajax({
+          url: '/postComment',
+
+          type: 'post',
+          data: {nickname:user,text:$('h4').next().val(),title:$('h1').text()},
+          dataType: 'json',
+          success: function (data) {
+            if(data.success){
+              window.alert('评论成功')
+              window.location.href = "/"
+            }
+          },
+          
+        })
+      }else{
+        alert('请先登录！');
+      }
+      
+      
+    })
+  </script>
+{{/block}}
+
+
